@@ -75,4 +75,4 @@ def clean_data(file_path):
     generations = [2021, 2022, 2023, 2024]
     for generation in generations:
         cleaned_generation = generation_cleaning(generation, data)
-        cleaned_generation.to_csv(f'cleaned_data_{generation}.csv', index=False)
+        cleaned_generation.to_csv(f'data/cleaned_data_{generation}.csv', index=False)
