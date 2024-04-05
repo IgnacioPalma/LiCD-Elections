@@ -3,6 +3,27 @@ Module for cleaaning the CSV file containing the data from the elections.
 """
 import pandas
 
+def alert_check(data):
+    """
+    Check if someone voted two times. Alert the user if that is the case.
+
+    Parameters
+        data (pandas.DataFrame): DataFrame with the data.
+    """
+    # Check if there are duplicated RUTs.
+    duplicated_ruts = data[data.duplicated(subset='Indica tu RUT ej: 21570316-9')]
+    if not duplicated_ruts.empty:
+        print('[ALERT] There are duplicated RUTs in the data:')
+        print(duplicated_ruts['Indica tu RUT ej: 21570316-9'])
+        print('------------------------------------------------')
+    
+    # Check if there are duplicated emails.
+    duplicated_emails = data[data.duplicated(subset='Indica tu correo institucional UC')]
+    if not duplicated_emails.empty:
+        print('[ALERT] There are duplicated emails in the data:')
+        print(duplicated_emails['Indica tu correo institucional UC'])
+        print('------------------------------------------------')
+
 def generation_cleaning(generation, data):
     """
     Given the data from the elections, return the data for the specified generation.
@@ -37,6 +58,9 @@ def clean_data(file_path):
         file_path (str): Path to the CSV file.
     """
     data = pandas.read_csv(file_path)
+
+    # Check if someone voted two times.
+    alert_check(data)
 
     # Drop the columns with the timestamp, username, RUT, and email.
     columns_to_drop = ['Timestamp', 'Username', 'Indica tu RUT ej: 21570316-9', 'Indica tu correo institucional UC']
